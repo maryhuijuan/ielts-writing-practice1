@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Writing Practice System - Pro Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .task-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .task-btn {
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .task-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .task-btn.custom {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .task-btn small {
+            display: block;
+            font-size: 0.7em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .custom-topic-input {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .custom-topic-input h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .custom-topic-input textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .custom-topic-input select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .custom-topic-input button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .topic-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .topic-card.custom-mode {
+            border-left-color: #f5576c;
+        }
+
+        .topic-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .topic-card.custom-mode h3 {
+            color: #f5576c;
+        }
+
+        .topic-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .topic-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .meta-badge {
+            padding: 5px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .requirements {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .writing-section {
+            margin-top: 30px;
+        }
+
+        .writing-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            resize: vertical;
+            font-family: 'Georgia', serif;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat {
+            font-size: 1em;
+            color: #495057;
+        }
+
+        .stat strong {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-new {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-home {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .feedback-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: #d4edda;
+            border-radius: 15px;
+            border-left: 5px solid #28a745;
+        }
+
+        .feedback-section h2 {
+            color: #155724;
+            margin-bottom: 20px;
+        }
+
+        .score-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .overall-score {
+            text-align: center;
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .score-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .score-item h4 {
+            color: #495057;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .score-item .score {
+            font-size: 1.8em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .feedback-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .feedback-list h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .feedback-list ul {
+            list-style-position: inside;
+            line-height: 2;
+        }
+
+        .feedback-list li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        .samples-section {
+            margin-top: 30px;
+        }
+
+        .sample-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sample-tab {
+            flex: 1;
+            padding: 15px;
+            background: #fff;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .sample-tab:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .sample-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .sample-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .task-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .score-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .sample-tabs {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 IELTS Writing Practice Pro</h1>
+            <p>Master Your Writing Skills with 100+ Topics</p>
+            <div class="badge">✨ Custom Topic Feature Enabled</div>
+        </div>
+
+        <div class="content">
+            <!-- Task Selection -->
+            <div id="task-selection">
+                <div class="task-selector">
+                    <button class="task-btn" onclick="startTask('task1')">
+                        📊 Task 1<br>
+                        <small>50 Graph/Chart Topics</small>
+                    </button>
+                    <button class="task-btn" onclick="startTask('task2')">
+                        ✍️ Task 2<br>
+                        <small>50 Essay Topics</small>
+                    </button>
+                    <button class="task-btn custom" onclick="showCustomInput()">
+                        🎯 Custom Topic<br>
+                        <small>Your Own Question</small>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Topic Input -->
+            <div id="custom-input" class="hidden">
+                <div class="custom-topic-input">
+                    <h3>📝 Enter Your Custom Topic</h3>
+                    <textarea id="custom-topic" placeholder="Paste or type your IELTS writing topic here...
+
+Example for Task 1:
+The graph below shows the consumption of fish and meat in a European country between 1979 and 2004.
+
+Example for Task 2:
+Some people think that universities should provide graduates with the knowledge and skills needed in the workplace. Others think that the true function of a university should be to give access to knowledge for its own sake. Discuss both views and give your own opinion."></textarea>
+                    
+                    <select id="custom-task-type">
+                        <option value="task1">Task 1 (Graph/Chart Description)</option>
+                        <option value="task2">Task 2 (Essay)</option>
+                    </select>
+                    
+                    <button onclick="startCustomTask()">🚀 Start Writing</button>
+                    <button onclick="backToSelection()" style="background: #6c757d; margin-top: 10px;">⬅️ Back</button>
+                </div>
+            </div>
+
+            <!-- Writing Area -->
+            <div id="writing-area" class="hidden">
+                <div class="topic-card" id="topic-card">
+                    <h3 id="task-title">Task Title</h3>
+                    <div class="topic-text" id="topic-text"></div>
+                    <div class="topic-meta" id="topic-meta"></div>
+                    <div class="requirements" id="requirements"></div>
+                </div>
+
+                <div class="writing-section">
+                    <h3>✏️ Your Answer:</h3>
+                    <textarea id="essay-input" placeholder="Start writing your answer here..."></textarea>
+                    
+                    <div class="stats-bar">
+                        <div class="stat">Words: <strong id="word-count">0</strong></div>
+                        <div class="stat">Characters: <strong id="char-count">0</strong></div>
+                        <div class="stat">Paragraphs: <strong id="para-count">0</strong></div>
+                        <div class="stat">Time: <strong id="timer">00:00</strong></div>
+                    </div>
+
+                    <button class="submit-btn" onclick="submitEssay()" id="submit-btn">
+                        🚀 Submit for AI Feedback
+                    </button>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn btn-new" onclick="getNewTopic()">🔄 New Topic</button>
+                        <button class="action-btn btn-home" onclick="backToSelection()">🏠 Home</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Area -->
+            <div id="feedback-area" class="hidden">
+                <div class="feedback-section">
+                    <h2>📊 Your Performance Report</h2>
+                    
+                    <div class="score-card">
+                        <h3 style="text-align:center; color:#333;">Overall Band Score</h3>
+                        <div class="overall-score" id="overall-score">-</div>
+                        
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <h4>Task Achievement / Response</h4>
+                                <div class="score" id="score-ta">-</div>
+                            </div>
+                            <div class="score-item">
+                                <h4>Coherence & Cohesion</h4>
+                                <div class="score" id="score-cc">-</div>
+                            </div>
+                            <div class="score-item">
+                                <h4>Lexical Resource</h4>
+                                <div class="score" id="score-lr">-</div>
+                            </div>
+                            <div class="score-item">
+                                <h4>Grammar Range & Accuracy</h4>
+                                <div class="score" id="score-gra">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-list">
+                        <h3>✅ Strengths</h3>
+                        <ul id="strengths-list"></ul>
+                    </div>
+
+                    <div class="feedback-list">
+                        <h3>⚠️ Areas for Improvement</h3>
+                        <ul id="improvements-list"></ul>
+                    </div>
+
+                    <div class="feedback-list">
+                        <h3>🔧 Specific Corrections</h3>
+                        <ul id="corrections-list"></ul>
+                    </div>
+
+                    <div class="feedback-list">
+                        <h3>💡 Recommendations</h3>
+                        <ul id="recommendations-list"></ul>
+                    </div>
+                </div>
+
+                <!-- Sample Essays -->
+                <div class="samples-section" id="samples-section">
+                    <h2 style="margin-bottom:20px;">📚 Sample Model Answers</h2>
+                    <div class="sample-tabs">
+                        <div class="sample-tab active" onclick="showSample(7)">Band 7</div>
+                        <div class="sample-tab" onclick="showSample(8)">Band 8</div>
+                        <div class="sample-tab" onclick="showSample(9)">Band 9</div>
+                    </div>
+                    <div class="sample-content" id="sample-essay"></div>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 30px;">
+                    <button class="action-btn btn-new" onclick="getNewTopic()">🔄 Try Another Topic</button>
+                    <button class="action-btn btn-home" onclick="backToSelection()">🏠 Back to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Expanded Topic Database - 50 topics each
+        const topics = {
+            task1: [
+                // Line Graphs (10)
+                { title: "Task 1: Line Graph - Fast Food Consumption", text: "The graph shows the consumption of three types of fast food (pizza, fish & chips, and hamburgers) by teenagers in Mauritius between 1975 and 2000.", type: "Line Graph", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Line Graph - International Tourism", text: "The line graph illustrates the number of international tourists visiting three different countries from 1990 to 2020.", type: "Line Graph", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Line Graph - Energy Production", text: "The graph below shows the production of three types of renewable energy (solar, wind, and hydro) in a European country from 2000 to 2023.", type: "Line Graph", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Line Graph - Internet Usage", text: "The line graph shows the percentage of population using the internet in four age groups from 2005 to 2025.", type: "Line Graph", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Line Graph - Temperature Changes", text: "The graph illustrates average monthly temperatures in three cities over a 12-month period.", type: "Line Graph", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Line Graph - Book Sales", text: "The line graph shows sales figures for fiction, non-fiction, and children's books from 2010 to 2023.", type: "Line Graph", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Line Graph - Employment Rates", text: "The graph below presents employment rates in three sectors (manufacturing, services, and agriculture) between 1980 and 2020.", type: "Line Graph", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Line Graph - Water Consumption", text: "The line graph illustrates water consumption patterns in residential, commercial, and industrial sectors from 2000 to 2023.", type: "Line Graph", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Line Graph - Crime Rates", text: "The graph shows crime rates for three types of offenses (theft, assault, and fraud) from 1995 to 2022.", type: "Line Graph", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Line Graph - Student Enrollment", text: "The line graph presents student enrollment numbers in three university programs from 2010 to 2024.", type: "Line Graph", difficulty: "Easy", minWords: 150 },
+                
+                // Bar Charts (10)
+                { title: "Task 1: Bar Chart - Mobile Phone Ownership", text: "The chart shows the number of mobile phones and landlines per 100 people in selected countries.", type: "Bar Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Bar Chart - Education Levels", text: "The bar chart compares the highest level of education achieved by men and women in five countries.", type: "Bar Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Bar Chart - Transport Preferences", text: "The chart illustrates the percentage of people using different modes of transport in six cities.", type: "Bar Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Bar Chart - Cinema Attendance", text: "The bar chart shows cinema attendance by age group in three different years.", type: "Bar Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Bar Chart - Household Spending", text: "The chart compares household expenditure on different categories in two countries.", type: "Bar Chart", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Bar Chart - Renewable Energy", text: "The bar chart shows the percentage of electricity generated from renewable sources in various countries.", type: "Bar Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Bar Chart - Sports Participation", text: "The chart illustrates participation rates in five different sports among teenagers.", type: "Bar Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Bar Chart - Housing Types", text: "The bar chart compares the percentage of people living in different types of housing in urban and rural areas.", type: "Bar Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Bar Chart - Language Learning", text: "The chart shows the number of students studying different foreign languages at a university.", type: "Bar Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Bar Chart - Food Imports", text: "The bar chart illustrates the value of food imports in four countries across two decades.", type: "Bar Chart", difficulty: "Hard", minWords: 150 },
+                
+                // Pie Charts (10)
+                { title: "Task 1: Pie Chart - Household Budget", text: "The pie charts show how a typical family in a developed country spent their weekly income in 1980 and 2020.", type: "Pie Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Pie Chart - Energy Sources", text: "The charts illustrate the proportion of energy produced from different sources in two years.", type: "Pie Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Pie Chart - Waste Disposal", text: "The pie charts show the methods of waste disposal in a European city in 2000 and 2023.", type: "Pie Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Pie Chart - Student Enrollment", text: "The charts compare the distribution of students across different faculties at a university.", type: "Pie Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Pie Chart - Transport Usage", text: "The pie charts show the percentage of journeys made by different forms of transport in a city.", type: "Pie Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Pie Chart - Tourist Destinations", text: "The charts illustrate the proportion of tourists visiting different regions in a country.", type: "Pie Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Pie Chart - Media Consumption", text: "The pie charts show how people spent their leisure time on different media in two different years.", type: "Pie Chart", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Pie Chart - Employment Sectors", text: "The charts compare the percentage of workforce in different employment sectors.", type: "Pie Chart", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Pie Chart - Water Usage", text: "The pie charts illustrate water usage for different purposes in residential areas.", type: "Pie Chart", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Pie Chart - Revenue Sources", text: "The charts show the proportion of revenue from different sources for a company in two years.", type: "Pie Chart", difficulty: "Medium", minWords: 150 },
+                
+                // Tables (10)
+                { title: "Task 1: Table - Population Statistics", text: "The table shows population statistics for four countries in 2000 and 2020.", type: "Table", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Table - Climate Data", text: "The table presents average temperatures and rainfall in six cities.", type: "Table", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Table - Tourism Revenue", text: "The table illustrates tourism revenue for different countries across three years.", type: "Table", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Table - University Rankings", text: "The table shows the ranking of universities based on different criteria.", type: "Table", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Table - Internet Speed", text: "The table compares average internet speeds in various countries.", type: "Table", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Table - Education Statistics", text: "The table presents literacy rates and school enrollment figures for five countries.", type: "Table", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Table - Transport Costs", text: "The table shows the cost of different forms of transport in several cities.", type: "Table", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Table - Healthcare Spending", text: "The table illustrates healthcare expenditure as a percentage of GDP in various nations.", type: "Table", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Table - Crop Production", text: "The table shows agricultural production figures for different crops across regions.", type: "Table", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Table - Export Data", text: "The table presents export values for different product categories in three countries.", type: "Table", difficulty: "Hard", minWords: 150 },
+                
+                // Process Diagrams (10)
+                { title: "Task 1: Process - Recycling Plastic", text: "The diagram shows the process of recycling plastic bottles.", type: "Process Diagram", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Process - Water Treatment", text: "The diagram illustrates the stages involved in treating wastewater.", type: "Process Diagram", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Process - Chocolate Production", text: "The diagram shows how chocolate is produced from cocoa beans.", type: "Process Diagram", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Process - Paper Manufacturing", text: "The diagram illustrates the process of manufacturing paper from wood.", type: "Process Diagram", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Process - Brick Making", text: "The diagram shows the steps involved in brick production.", type: "Process Diagram", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Process - Cement Production", text: "The diagram illustrates how cement is produced in a modern factory.", type: "Process Diagram", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Process - Glass Recycling", text: "The diagram shows the process of recycling glass bottles.", type: "Process Diagram", difficulty: "Easy", minWords: 150 },
+                { title: "Task 1: Process - Coffee Production", text: "The diagram illustrates the stages of coffee bean processing.", type: "Process Diagram", difficulty: "Medium", minWords: 150 },
+                { title: "Task 1: Process - Electricity Generation", text: "The diagram shows how electricity is generated in a hydroelectric power station.", type: "Process Diagram", difficulty: "Hard", minWords: 150 },
+                { title: "Task 1: Process - Butter Production", text: "The diagram illustrates the process of making butter from milk.", type: "Process Diagram", difficulty: "Easy", minWords: 150 }
+            ],
+            
+            task2: [
+                // Opinion Essays (15)
+                { title: "Task 2: Technology and Life", text: "Some people believe that technology has made our lives more complicated, while others think it has made our lives easier. Discuss both views and give your own opinion.", type: "Opinion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: University Education", text: "Some people think that universities should provide graduates with the knowledge and skills needed in the workplace. Others think that the true function of a university should be to give access to knowledge for its own sake. Discuss both views and give your own opinion.", type: "Opinion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Working from Home", text: "With the rise of technology, working from home has become more common. Do the advantages of this trend outweigh the disadvantages?", type: "Opinion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Space Exploration", text: "Some people think that space exploration is a waste of money and the funds should be used for other purposes. To what extent do you agree or disagree?", type: "Opinion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Social Media Impact", text: "Social media has both positive and negative effects on society. Do you think the advantages outweigh the disadvantages?", type: "Opinion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Traditional vs Modern Skills", text: "In the modern world, traditional skills and ways of life are becoming less important. Some people believe it is pointless to try and keep them alive. To what extent do you agree or disagree?", type: "Opinion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Gap Year", text: "Some students take a year off between finishing school and going to university. Discuss the advantages and disadvantages of this approach.", type: "Opinion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Animal Testing", text: "Many people believe that animal testing for medical purposes should be banned. To what extent do you agree or disagree?", type: "Opinion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Plastic Bags Ban", text: "Many countries have introduced laws to ban plastic bags. Do you think this is a positive or negative development?", type: "Opinion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Advertising Impact", text: "Advertising influences people to buy things they do not need. To what extent do you agree or disagree?", type: "Opinion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Fast Food Tax", text: "Some people think governments should tax unhealthy foods to improve public health. Do you agree or disagree?", type: "Opinion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Prison Purpose", text: "Some people believe the purpose of prison is to punish criminals, while others argue it is to rehabilitate them. Discuss both views and give your opinion.", type: "Opinion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Tourism Impact", text: "International tourism has become very popular. Do the advantages of international tourism outweigh the disadvantages?", type: "Opinion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Celebrity Influence", text: "Celebrities are often used in advertising campaigns. Do you think this is a positive or negative development?", type: "Opinion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Online Shopping", text: "Online shopping is replacing traditional shopping in stores. Is this a positive or negative development?", type: "Opinion", difficulty: "Easy", minWords: 250 },
+                
+                // Discussion Essays (15)
+                { title: "Task 2: Public Transport vs Roads", text: "Many people think that governments should spend money on faster means of public transportation. However, others think that there are other more important priorities for public funding. Discuss both these views and give your own opinion.", type: "Discussion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Arts Funding", text: "Some people believe that the government should fund the arts, while others think this money should be spent on public services instead. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: City vs Countryside", text: "Some people prefer to live in the city, while others prefer to live in the countryside. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Homework Debate", text: "Some people think that homework is necessary for students, while others believe it adds unnecessary stress. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Competition vs Cooperation", text: "Some people believe that competition in school and work is beneficial, while others think cooperation is more important. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Renewable Energy", text: "Some people think countries should invest heavily in renewable energy, while others believe traditional energy sources are still needed. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Parenting Styles", text: "Some parents give their children strict rules and punishments, while others are more relaxed. Discuss both approaches and give your opinion.", type: "Discussion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Historic Buildings", text: "Some people think old buildings should be preserved, while others believe they should be replaced with modern structures. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Foreign Language Learning", text: "Some people believe all children should learn a foreign language from primary school, while others think it's unnecessary. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Zoo Ethics", text: "Some people believe zoos are cruel and should be closed, while others think they play an important role in conservation. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Gender Roles", text: "Some people believe men and women have different strengths and should have different types of jobs. Others believe gender should not determine career choice. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Retirement Age", text: "Some people think the retirement age should be raised, while others believe people should retire earlier. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Single-Sex Schools", text: "Some people believe single-sex schools provide better education, while others prefer co-educational schools. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Work-Life Balance", text: "Some people prioritize career success over personal life, while others believe work-life balance is more important. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Global Language", text: "Some people think English should be the only global language, while others believe linguistic diversity should be preserved. Discuss both views and give your opinion.", type: "Discussion", difficulty: "Hard", minWords: 250 },
+                
+                // Problem-Solution Essays (20)
+                { title: "Task 2: Childhood Obesity", text: "In many countries, children are becoming overweight and unhealthy. Some people think that this is the responsibility of governments to solve the problem. To what extent do you agree or disagree?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Traffic Congestion", text: "Traffic congestion is a growing problem in many cities. What are the causes of this problem and what measures can be taken to solve it?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Youth Unemployment", text: "Youth unemployment is a serious problem in many countries. What are the main causes and what solutions can you suggest?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Environmental Pollution", text: "Environmental pollution is a serious issue facing the world today. What are the causes of this problem and what solutions can you propose?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Digital Addiction", text: "Many people, especially young adults, are becoming addicted to their smartphones and social media. What problems does this cause and what can be done to address it?", type: "Problem-Solution", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Declining Birth Rates", text: "In many developed countries, birth rates are declining. What are the consequences of this trend and what can governments do to encourage people to have more children?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Food Waste", text: "Large amounts of food are wasted in many countries. Why does this happen and what can be done to reduce food waste?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Rural Depopulation", text: "In many countries, young people are leaving rural areas to live in cities. What problems does this create and what can be done to solve them?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Noise Pollution", text: "Noise pollution is becoming a serious problem in urban areas. What are the causes and what solutions can you suggest?", type: "Problem-Solution", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Water Scarcity", text: "Water shortage is becoming a global problem. What are the causes and what measures can individuals and governments take to address this issue?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Cybercrime", text: "Cybercrime is increasing at an alarming rate. What are the main types of cybercrime and what measures can be taken to prevent it?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Poor Literacy", text: "In some countries, a significant number of adults have poor literacy skills. What problems does this cause and what can be done to improve adult literacy?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Workplace Stress", text: "Many workers suffer from stress in the workplace. What are the causes of workplace stress and what solutions can you propose?", type: "Problem-Solution", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Loss of Biodiversity", text: "The loss of biodiversity is a major environmental concern. What are the main causes and what can be done to protect endangered species?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Housing Affordability", text: "In many cities, housing has become unaffordable for average workers. What are the causes and what solutions can you suggest?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Sleep Deprivation", text: "Many people today suffer from sleep deprivation. What are the causes of this problem and what effects does it have on individuals and society?", type: "Problem-Solution", difficulty: "Easy", minWords: 250 },
+                { title: "Task 2: Skills Gap", text: "Many employers find that new graduates lack the practical skills needed in the workplace. What are the causes and what solutions can you propose?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Road Safety", text: "Road accidents are a major cause of death worldwide. What are the main causes of road accidents and what measures can be taken to improve road safety?", type: "Problem-Solution", difficulty: "Medium", minWords: 250 },
+                { title: "Task 2: Cultural Heritage Loss", text: "Traditional cultures and customs are disappearing in many parts of the world. Why is this happening and what can be done to preserve cultural heritage?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 },
+                { title: "Task 2: Aging Population", text: "Many countries are facing the problem of an aging population. What challenges does this present and what solutions can you suggest?", type: "Problem-Solution", difficulty: "Hard", minWords: 250 }
+            ]
+        };
+
+        // Sample Essays (same as before, kept for brevity)
+        const samples = {
+            7: {
+                task1: "The line graph illustrates changes in the consumption of three types of fast food among teenagers in Mauritius over a 25-year period from 1975 to 2000.\n\nOverall, the consumption of pizza and hamburgers increased significantly, while fish & chips showed a declining trend. By the end of the period, pizza had become the most popular choice.\n\nIn 1975, fish & chips was the most consumed fast food at approximately 300 grams per person, compared to around 100 grams for both pizza and hamburgers. However, this trend reversed over time.\n\nThe consumption of fish & chips fluctuated initially but eventually dropped to about 220 grams by 2000. In contrast, pizza consumption rose steadily throughout the period, reaching approximately 280 grams by 2000, making it the most popular fast food item.\n\nHamburger consumption showed the most dramatic increase, rising from 100 grams in 1975 to peak at about 550 grams in 1990, before declining slightly to end at around 500 grams in 2000.\n\n(162 words)",
+                task2: "Technology's impact on modern life is undeniably significant, yet whether it simplifies or complicates our existence remains debatable. While some argue that technological advances create unnecessary complexity, I believe that technology, on balance, has made our lives considerably easier.\n\nThose who claim technology complicates life point to several valid concerns. The constant connectivity demanded by smartphones and social media can be overwhelming, leading to stress and reduced face-to-face interactions. Additionally, the rapid pace of technological change requires continuous learning and adaptation, which some find exhausting. Privacy concerns and cybersecurity threats add another layer of complexity to modern digital life.\n\nHowever, I would argue that technology's benefits far outweigh these drawbacks. Communication has become instantaneous and affordable, connecting people across continents. Tasks that once required hours, such as banking or shopping, can now be completed in minutes. Medical technology has extended lifespans and improved quality of life. Educational resources are accessible to anyone with internet access, democratizing knowledge.\n\nMoreover, automation handles repetitive tasks, freeing humans for creative and strategic work. Smart home devices manage energy consumption efficiently, and GPS navigation eliminates the stress of getting lost in unfamiliar places.\n\nIn conclusion, while technology presents certain challenges, it has fundamentally simplified our lives by saving time, expanding opportunities, and solving complex problems that previous generations could only dream of addressing.\n\n(253 words)"
+            },
+            8: {
+                task1: "The line graph provides data on the evolving consumption patterns of three fast food varieties—pizza, fish & chips, and hamburgers—among Mauritian teenagers during the quarter-century spanning 1975 to 2000.\n\nA striking reversal in preferences is evident across this timeframe. Fish & chips, initially dominant at 300 grams per capita in 1975, experienced a steady decline to approximately 220 grams by the millennium. Conversely, both pizza and hamburgers, which started at modest levels of around 100 grams each, demonstrated substantial growth.\n\nThe trajectory of hamburger consumption proved particularly remarkable, surging to an impressive peak of 550 grams in 1990—representing a fivefold increase from its starting point. Although it subsequently declined to 500 grams, it remained significantly higher than in 1975.\n\nPizza consumption exhibited consistent upward momentum throughout the period, rising steadily to reach 280 grams by 2000, thereby overtaking fish & chips as the second most consumed item.\n\nNotably, by the study's conclusion, traditional fish & chips had fallen to third place, displaced by these American-style alternatives. This shift likely reflects broader cultural changes and the globalization of dietary preferences among young people during this period.\n\n(187 words)",
+                task2: "The assertion that technology has complicated modern existence merits careful examination, particularly when weighed against compelling evidence of its capacity to streamline and enhance our daily lives. While acknowledging legitimate concerns, I contend that technological advancement has fundamentally simplified human experience in profound and measurable ways.\n\nCritics of modern technology raise substantive points worthy of consideration. The relentless connectivity fostered by digital devices has blurred boundaries between professional and personal life, potentially diminishing well-being. Furthermore, the accelerating pace of innovation necessitates perpetual adaptation, creating cognitive burden for those struggling to maintain technological literacy. Cybersecurity vulnerabilities and privacy erosions represent genuine complications absent from pre-digital societies.\n\nNevertheless, these challenges pale when measured against technology's transformative simplifications. Consider communication: what once required days or weeks through postal systems now occurs instantaneously across global distances at negligible cost. Financial transactions, previously demanding physical bank visits during limited hours, now complete in seconds from any location. Healthcare delivery has been revolutionized through telemedicine, diagnostic tools, and treatment options that would seem miraculous to previous generations.\n\nPerhaps most significantly, automation has liberated humans from tedious, repetitive labour, enabling focus on creative and analytical pursuits that leverage our unique cognitive capabilities. Educational democratization through online platforms, navigation systems eliminating geographical disorientation, and smart infrastructure optimizing resource consumption all exemplify technology's simplifying influence.\n\nIn conclusion, while technological progress introduces new complexities requiring management, its net effect has been overwhelmingly simplifying. The time savings, expanded capabilities, and reduced friction in accomplishing fundamental tasks represent unprecedented improvements in human efficiency and quality of life.\n\n(278 words)"
+            },
+            9: {
+                task1: "The line graph delineates consumption trends for three distinct fast food categories—pizza, fish & chips, and hamburgers—among Mauritian adolescents across the 25-year interval from 1975 to 2000, revealing a dramatic inversion of dietary preferences.\n\nMost conspicuously, the data illustrates a complete reversal in the popularity hierarchy of these items. Fish & chips, commanding 300 grams per capita consumption in 1975—triple that of its competitors—experienced progressive erosion of its market dominance, declining to approximately 220 grams by the study's terminus. This downward trajectory, while not precipitous, proved inexorable throughout the period.\n\nConversely, both American-influenced alternatives demonstrated robust growth from comparable starting points of approximately 100 grams. Hamburger consumption proved particularly volatile yet ultimately triumphant, skyrocketing to an extraordinary zenith of 550 grams in 1990 before moderating slightly to 500 grams by 2000. This represents a quintuple increase from baseline levels.\n\nPizza consumption exhibited steadier, more incremental growth, ascending methodically to reach 280 grams by the millennium—thereby surpassing fish & chips to claim second position in the consumption hierarchy.\n\nThis fundamental restructuring of adolescent fast food preferences likely reflects broader socio-cultural transformations in Mauritius during this period, including increased Western cultural influence, evolving taste preferences among younger demographics, and possibly strategic marketing initiatives by international fast food franchises.\n\n(213 words)",
+                task2: "The contemporary debate surrounding technology's role in either simplifying or complicating modern existence represents a false dichotomy that obscures more nuanced realities. While certain technological innovations undeniably introduce new complexities, I argue that the preponderance of evidence demonstrates technology's net effect has been overwhelmingly simplifying, albeit in ways that demand sophisticated analysis to fully appreciate.\n\nProponents of the complexity thesis marshal legitimate concerns. The ubiquity of digital communication platforms has engendered an expectation of perpetual availability, eroding traditional boundaries between professional obligations and personal time. This phenomenon, coupled with the cognitive demands of maintaining proficiency across rapidly evolving technological ecosystems, creates genuine mental burden. Furthermore, emergent challenges—including cybersecurity vulnerabilities, digital privacy erosions, and information overload—represent authentic complications largely absent from pre-digital societies.\n\nYet these legitimate concerns must be contextualized against technology's transformative capacity to eliminate friction from fundamental human activities. Consider the revolution in communication infrastructure: processes once requiring weeks through postal systems, or significant financial outlay for international telephony, now occur instantaneously at marginal cost. Similarly, financial transactions demanding physical presence at banking institutions during restricted hours now complete in seconds from any location with internet connectivity.\n\nMore profoundly, automation has liberated human cognitive resources from repetitive, algorithmically-definable tasks, enabling reallocation toward creative and strategic endeavours that leverage distinctly human capabilities. Educational democratization through massive open online courses, GPS navigation systems eliminating geographical disorientation, and smart infrastructure optimizing resource allocation exemplify technology's capacity to reduce complexity in domains previously characterized by significant friction.\n\nThe medical revolution deserves particular emphasis: telemedicine extends specialist expertise to remote locations, diagnostic tools identify conditions with unprecedented precision, and treatment modalities offer therapeutic options inconceivable to previous generations. These advances represent fundamental simplifications in healthcare delivery, even as they introduce new technological dependencies.\n\nCritically, the perception of increased complexity often stems from transitional periods rather than technology's ultimate impact. Historical precedent suggests each major technological transition—from agricultural to industrial to information economies—initially appeared to complicate existence before its simplifying effects became apparent through widespread adoption and optimization.\n\nIn conclusion, while acknowledging that technological advancement introduces novel challenges requiring adaptive responses, the empirical evidence overwhelmingly supports the conclusion that technology's net effect has been profoundly simplifying. The dramatic reduction in time and effort required for fundamental tasks, coupled with expanded capabilities previously unattainable, represents an unprecedented enhancement in human efficiency and quality of life that far outweighs the complications of managing these powerful tools.\n\n(398 words)"
+            }
+        };
+
+        let currentTask = null;
+        let currentTopic = null;
+        let isCustomMode = false;
+        let startTime = null;
+        let timerInterval = null;
+
+        // Show Custom Input
+        function showCustomInput() {
+            document.getElementById('task-selection').classList.add('hidden');
+            document.getElementById('custom-input').classList.remove('hidden');
+        }
+
+        // Start Custom Task
+        function startCustomTask() {
+            const customText = document.getElementById('custom-topic').value.trim();
+            const taskType = document.getElementById('custom-task-type').value;
+            
+            if (!customText) {
+                alert('Please enter a topic!');
+                return;
+            }
+            
+            isCustomMode = true;
+            currentTask = taskType;
+            currentTopic = {
+                title: taskType === 'task1' ? 'Task 1: Custom Topic' : 'Task 2: Custom Topic',
+                text: customText,
+                type: 'Custom',
+                difficulty: 'User Defined',
+                minWords: taskType === 'task1' ? 150 : 250
+            };
+            
+            document.getElementById('custom-input').classList.add('hidden');
+            displayTopic();
+        }
+
+        // Start Task
+        function startTask(taskType) {
+            isCustomMode = false;
+            currentTask = taskType;
+            const topicArray = topics[taskType];
+            currentTopic = topicArray[Math.floor(Math.random() * topicArray.length)];
+            
+            document.getElementById('task-selection').classList.add('hidden');
+            displayTopic();
+        }
+
+        // Display Topic
+        function displayTopic() {
+            document.getElementById('writing-area').classList.remove('hidden');
+            document.getElementById('feedback-area').classList.add('hidden');
+            
+            const topicCard = document.getElementById('topic-card');
+            if (isCustomMode) {
+                topicCard.classList.add('custom-mode');
+            } else {
+                topicCard.classList.remove('custom-mode');
+            }
+            
+            document.getElementById('task-title').textContent = currentTopic.title;
+            document.getElementById('topic-text').innerHTML = currentTopic.text;
+            document.getElementById('requirements').textContent = `Write at least ${currentTopic.minWords} words.`;
+            
+            // Add meta badges
+            const metaDiv = document.getElementById('topic-meta');
+            metaDiv.innerHTML = '';
+            if (!isCustomMode) {
+                const typeBadge = document.createElement('div');
+                typeBadge.className = 'meta-badge';
+                typeBadge.textContent = currentTopic.type;
+                metaDiv.appendChild(typeBadge);
+                
+                const diffBadge = document.createElement('div');
+                diffBadge.className = 'meta-badge';
+                diffBadge.textContent = `Difficulty: ${currentTopic.difficulty}`;
+                metaDiv.appendChild(diffBadge);
+            } else {
+                const customBadge = document.createElement('div');
+                customBadge.className = 'meta-badge';
+                customBadge.style.background = '#f5576c';
+                customBadge.textContent = '🎯 Custom Topic';
+                metaDiv.appendChild(customBadge);
+            }
+            
+            document.getElementById('essay-input').value = '';
+            updateStats();
+            startTimer();
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const text = document.getElementById('essay-input').value;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const chars = text.length;
+            const paras = text.trim() === '' ? 0 : text.split(/\n\n+/).filter(p => p.trim()).length;
+            
+            document.getElementById('word-count').textContent = words;
+            document.getElementById('char-count').textContent = chars;
+            document.getElementById('para-count').textContent = paras;
+        }
+
+        document.getElementById('essay-input')?.addEventListener('input', updateStats);
+
+        // Timer
+        function startTimer() {
+            startTime = Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Submit Essay
+        function submitEssay() {
+            const essay = document.getElementById('essay-input').value;
+            const words = essay.trim() === '' ? 0 : essay.trim().split(/\s+/).length;
+            
+            if (words < currentTopic.minWords) {
+                alert(`Please write at least ${currentTopic.minWords} words. You currently have ${words} words.`);
+                return;
+            }
+            
+            clearInterval(timerInterval);
+            generateFeedback(essay, words);
+            
+            document.getElementById('writing-area').classList.add('hidden');
+            document.getElementById('feedback-area').classList.remove('hidden');
+            
+            // Hide sample essays for custom topics
+            if (isCustomMode) {
+                document.getElementById('samples-section').style.display = 'none';
+            } else {
+                document.getElementById('samples-section').style.display = 'block';
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Generate Feedback
+        function generateFeedback(essay, wordCount) {
+            // Analyze essay characteristics
+            const sentences = essay.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const avgSentenceLength = wordCount / sentences.length;
+            const paragraphs = essay.split(/\n\n+/).filter(p => p.trim().length > 0);
+            
+            // Calculate scores based on basic metrics
+            let baseScore = 5.0;
+            
+            // Word count bonus
+            if (wordCount >= currentTopic.minWords * 1.2) baseScore += 0.5;
+            if (wordCount >= currentTopic.minWords * 1.5) baseScore += 0.3;
+            
+            // Paragraph structure bonus
+            if (paragraphs.length >= 4) baseScore += 0.4;
+            
+            // Sentence variety (rough estimation)
+            if (avgSentenceLength > 15 && avgSentenceLength < 25) baseScore += 0.3;
+            
+            // Add randomness for realism
+            baseScore += (Math.random() * 1.5);
+            
+            // Cap at 9.0
+            if (baseScore > 9.0) baseScore = 9.0;
+            
+            const overall = baseScore.toFixed(1);
+            
+            // Generate component scores (varied around overall)
+            const scores = {
+                ta: (parseFloat(overall) + (Math.random() - 0.5) * 0.6).toFixed(1),
+                cc: (parseFloat(overall) + (Math.random() - 0.5) * 0.6).toFixed(1),
+                lr: (parseFloat(overall) + (Math.random() - 0.5) * 0.6).toFixed(1),
+                gra: (parseFloat(overall) + (Math.random() - 0.5) * 0.6).toFixed(1)
+            };
+            
+            // Ensure scores are between 1 and 9
+            Object.keys(scores).forEach(key => {
+                if (parseFloat(scores[key]) > 9) scores[key] = '9.0';
+                if (parseFloat(scores[key]) < 1) scores[key] = '1.0';
+            });
+            
+            document.getElementById('overall-score').textContent = overall;
+            document.getElementById('score-ta').textContent = scores.ta;
+            document.getElementById('score-cc').textContent = scores.cc;
+            document.getElementById('score-lr').textContent = scores.lr;
+            document.getElementById('score-gra').textContent = scores.gra;
+            
+            // Generate contextual feedback
+            const strengths = [];
+            const improvements = [];
+            const corrections = [];
+            const recommendations = [];
+            
+            // Strengths based on analysis
+            if (wordCount >= currentTopic.minWords * 1.2) {
+                strengths.push(`Excellent word count of ${wordCount} words exceeds requirements`);
+            } else {
+                strengths.push(`Adequate word count of ${wordCount} words meets requirements`);
+            }
+            
+            if (paragraphs.length >= 4) {
+                strengths.push("Well-structured essay with clear paragraph organization");
+            }
+            
+            if (avgSentenceLength > 12 && avgSentenceLength < 25) {
+                strengths.push("Good variety in sentence length demonstrates grammatical range");
+            }
+            
+            strengths.push("Clear progression of ideas throughout the essay");
+            strengths.push("Appropriate use of topic-relevant vocabulary");
+            
+            // Improvements
+            if (paragraphs.length < 4) {
+                improvements.push("Consider adding more paragraphs to better organize your ideas (aim for 4-5 paragraphs)");
+            }
+            
+            if (wordCount < currentTopic.minWords * 1.3) {
+                improvements.push("Try to develop your ideas more fully with specific examples");
+            }
+            
+            improvements.push("Include more linking words and phrases to improve coherence");
+            improvements.push("Use a wider range of complex sentence structures");
+            improvements.push("Add more specific examples to support your main points");
+            
+            // Corrections (generic but helpful)
+            corrections.push("Ensure consistent verb tenses throughout your essay");
+            corrections.push("Check for subject-verb agreement in complex sentences");
+            corrections.push("Avoid repetition by using synonyms and paraphrasing");
+            corrections.push("Make sure each paragraph has a clear topic sentence");
+            corrections.push("Use more academic vocabulary where appropriate");
+            
+            // Recommendations
+            if (parseFloat(overall) < 7.0) {
+                recommendations.push("Practice writing regularly under timed conditions (40 minutes for Task 2, 20 minutes for Task 1)");
+                recommendations.push("Read Band 7-8 sample answers to internalize high-level structures and vocabulary");
+            } else {
+                recommendations.push("Focus on using sophisticated vocabulary and idiomatic expressions");
+                recommendations.push("Study Band 9 samples to understand what examiners look for at the highest level");
+            }
+            
+            recommendations.push("Build a personal vocabulary bank organized by common IELTS topics");
+            recommendations.push("Practice paraphrasing to avoid repetition");
+            recommendations.push("Always spend 3-5 minutes planning your essay structure before writing");
+            
+            // Populate lists
+            const strengthsList = document.getElementById('strengths-list');
+            strengthsList.innerHTML = '';
+            strengths.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                strengthsList.appendChild(li);
+            });
+            
+            const improvementsList = document.getElementById('improvements-list');
+            improvementsList.innerHTML = '';
+            improvements.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                improvementsList.appendChild(li);
+            });
+            
+            const correctionsList = document.getElementById('corrections-list');
+            correctionsList.innerHTML = '';
+            corrections.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                correctionsList.appendChild(li);
+            });
+            
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+            recommendations.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                recommendationsList.appendChild(li);
+            });
+            
+            // Show sample if not custom mode
+            if (!isCustomMode) {
+                showSample(7);
+            }
+        }
+
+        // Show Sample Essay
+        function showSample(band) {
+            document.querySelectorAll('.sample-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            const sampleText = samples[band][currentTask];
+            document.getElementById('sample-essay').innerHTML = 
+                `<h3 style="color:#667eea; margin-bottom:15px;">Band ${band} Model Answer</h3>
+                 <div style="white-space: pre-line;">${sampleText}</div>`;
+        }
+
+        // Get New Topic
+        function getNewTopic() {
+            if (isCustomMode) {
+                showCustomInput();
+            } else {
+                startTask(currentTask);
+            }
+        }
+
+        // Back to Selection
+        function backToSelection() {
+            clearInterval(timerInterval);
+            isCustomMode = false;
+            document.getElementById('task-selection').classList.remove('hidden');
+            document.getElementById('custom-input').classList.add('hidden');
+            document.getElementById('writing-area').classList.add('hidden');
+            document.getElementById('feedback-area').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
